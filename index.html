@@ -1,506 +1,732 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Members Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Font Lexend Deca -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-soft: #eff4ff;
+      --border: #e2e8f0;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --radius-lg: 18px;
+      --radius-full: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
 
-    <!-- Icons from ioicons -->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-    ></script>
+    * {
+      box-sizing: border-box;
+    }
 
-    <link rel="stylesheet" href="style.css" />
-    <title>Real Estate</title>
-  </head>
-  <body>
-    <header class="header">
-      <a href="#">
-        <img src="img/logo.webp" alt="logo" class="header-logo" />
-      </a>
-      <nav class="nav">
-        <a href="#about" class="nav-links">About</a>
-        <a href="#properties" class="nav-links">Properties</a>
-        <a href="#testimonial" class="nav-links">Testimonial</a>
-        <a href="#contact" class="nav-links">Contact</a>
-      </nav>
-    </header>
-    <main class="main">
-      <section class="section hero">
-        <div class="hero-container">
-          <h1 class="primary-heading">Find your Dream Home!</h1>
-          <p class="hero-description">
-            As a leading real estate firm, our company specializes in
-            facilitating seamless house sales. With a commitment to personalized
-            service and market expertise.
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ================= HEADER & FILTER ================= */
+
+    .search-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px 22px 18px;
+      margin-bottom: 28px;
+    }
+
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+
+    .search-title-group h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .search-title-group p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .search-count {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .search-count span {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px 14px;
+    }
+
+    @media (max-width: 900px) {
+      .filters-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .filters-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .filter-input,
+    .filter-select {
+      padding: 10px 11px;
+      font-size: 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      outline: none;
+      background: #f9fafb;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease,
+        background-color 0.18s ease;
+    }
+
+    .filter-input:focus,
+    .filter-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+      background: #ffffff;
+    }
+
+    .filter-footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-clear {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background 0.18s ease, border-color 0.18s ease,
+        color 0.18s ease;
+    }
+
+    .btn-clear:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: var(--text-main);
+    }
+
+    /* ================= GRID & CARD ================= */
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .member-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 22px 22px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .avatar-wrapper {
+      width: 96px;
+      height: 96px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 3px solid #e5edff;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+      margin-bottom: 14px;
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .member-name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .member-field {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .member-company {
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .member-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .member-location {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .btn-view {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+      transition: background 0.18s ease, transform 0.12s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .btn-view:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-view:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ================= MODAL PROFILE ================= */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 720px;
+      width: 100%;
+      padding: 20px 24px 22px;
+      box-shadow: 0 28px 70px rgba(15, 23, 42, 0.35);
+      position: relative;
+    }
+
+    @media (max-width: 720px) {
+      .modal-dialog {
+        margin: 0 12px;
+        padding: 18px 16px 18px;
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      border: none;
+      background: transparent;
+      font-size: 22px;
+      cursor: pointer;
+      color: #9ca3af;
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 2px solid #e5edff;
+    }
+
+    .modal-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-info-primary h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .modal-info-primary p {
+      margin: 2px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .modal-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .modal-body {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .modal-section {
+      margin-top: 10px;
+    }
+
+    .modal-section h4 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    .modal-section ul {
+      margin: 4px 0 0;
+      padding-left: 18px;
+    }
+
+    .modal-section li {
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- SEARCH + FILTER CARD -->
+    <section class="search-card">
+      <div class="search-header">
+        <div class="search-title-group">
+          <h2>Search Members</h2>
+          <p>Tìm kiếm và lọc theo tên, vị trí, tổ chức, lĩnh vực...</p>
+        </div>
+        <div class="search-count">
+          Showing <span id="visibleCount">3</span> of
+          <span id="totalCount">3</span> members
+        </div>
+      </div>
+
+      <div class="filters-row">
+        <div class="filter-group">
+          <span class="filter-label">Tên</span>
+          <input
+            id="filterName"
+            class="filter-input"
+            type="text"
+            placeholder="Search by name..."
+          />
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Vị trí công việc</span>
+          <input
+            id="filterTitle"
+            class="filter-input"
+            type="text"
+            placeholder="Search by title..."
+          />
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Tổ chức</span>
+          <input
+            id="filterCompany"
+            class="filter-input"
+            type="text"
+            placeholder="Search by company..."
+          />
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Lĩnh vực</span>
+          <select id="filterField" class="filter-select">
+            <option value="">Tất cả</option>
+            <option value="Công nghệ">Công nghệ</option>
+            <option value="Ngân hàng">Ngân hàng</option>
+            <option value="Giáo dục">Giáo dục</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-footer">
+        <button id="btnClearFilters" class="btn-clear">
+          &#10005; Clear All Filters
+        </button>
+      </div>
+    </section>
+
+    <!-- GRID MEMBERS -->
+    <section class="grid" id="membersGrid">
+      <!-- Card 1 -->
+      <article
+        class="member-card"
+        data-member-id="m001"
+        data-name="Phạm Hoàng Bảo Long"
+        data-title="Software Engineer"
+        data-company="Bosch Global Software Technologies"
+        data-field="Công nghệ"
+      >
+        <div class="avatar-wrapper">
+          <img src="C:\Workspace\SourceCode\DataPortal\landing-page\avatar.jpg" alt="Avatar" />
+        </div>
+        <div class="member-name">Phạm Hoàng Bảo Long</div>
+        <div class="member-field">Lĩnh vực: Công nghệ, phần mềm</div>
+        <div class="member-company">
+          Bosch Global Software Technologies
+        </div>
+        <div class="member-title">Software Engineer</div>
+        <div class="member-location">TP.HCM, Việt Nam</div>
+        <button class="btn-view">View Profile</button>
+      </article>
+
+      <!-- Card 2 -->
+      <article
+        class="member-card"
+        data-member-id="m002"
+        data-name="Tô Phương Huy"
+        data-title="RM"
+        data-company="Techcombank"
+        data-field="Ngân hàng"
+      >
+        <div class="avatar-wrapper">
+          <img src="https://via.placeholder.com/150x150?text=H" alt="Avatar" />
+        </div>
+        <div class="member-name">Tô Phương Huy</div>
+        <div class="member-field">
+          Lĩnh vực: Ngân hàng / Hệ sinh thái tài chính, đầu tư
+        </div>
+        <div class="member-company">Techcombank</div>
+        <div class="member-title">
+          Chuyên viên cao cấp tư vấn tài chính cá nhân cho khách hàng VIP
+        </div>
+        <div class="member-location">Hạ Long, Quảng Ninh</div>
+        <button class="btn-view">View Profile</button>
+      </article>
+
+      <!-- Card 3 -->
+      <article
+        class="member-card"
+        data-member-id="m003"
+        data-name="Nguyễn Hà Quỳnh Anh"
+        data-title="Product Marketing"
+        data-company="FPT Software / STEAM for Vietnam"
+        data-field="Giáo dục"
+      >
+        <div class="avatar-wrapper">
+          <img src="https://via.placeholder.com/150x150?text=QA" alt="Avatar" />
+        </div>
+        <div class="member-name">Nguyễn Hà Quỳnh Anh</div>
+        <div class="member-field">Lĩnh vực: Product Marketing, Giáo dục</div>
+        <div class="member-company">FPT Software, STEAM for VIETNAM</div>
+        <div class="member-title">Product Marketing</div>
+        <div class="member-location">Hà Nội, Việt Nam</div>
+        <button class="btn-view">View Profile</button>
+      </article>
+    </section>
+  </div>
+
+  <!-- MODAL PROFILE -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal-dialog">
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+
+      <div class="modal-header">
+        <div class="modal-avatar">
+          <img id="modalAvatar" src="" alt="Avatar" />
+        </div>
+        <div class="modal-info-primary">
+          <h3 id="modalName">Name</h3>
+          <p id="modalTitle">Job Title</p>
+          <p id="modalCompany">Company</p>
+          <p id="modalLocation">Location</p>
+
+          <div class="modal-chip-row">
+            <span class="chip" id="modalFieldChip">Lĩnh vực</span>
+            <span class="chip">Future Leaders</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section">
+          <h4>Giới thiệu</h4>
+          <p id="modalBio">
+            Đây là phần mô tả ngắn về thành viên. Bạn có thể cập nhật nội dung
+            này từ dữ liệu thực tế.
           </p>
-          <a href="#properties" class="btn btn-properties">Properties</a>
-          <a href="#contact" class="btn btn-contact">Contact &rarr;</a>
-          <p class="hero-prices">Price Starts at</p>
-          <h3 class="hero-price">₹25,00,000+</h3>
         </div>
-        <div class="hero-img-container">
-          <img src="img/houses/hero.webp" alt="House" class="hero-img" />
-        </div>
-      </section>
-      <section class="section" id="about">
-        <h2 class="secondary-heading">We handle Everything</h2>
-        <p class="hero-description about-description">
-          We guide clients through every step of the process, ensuring optimal
-          outcomes and a stress-free experience in the dynamic real estate
-          landscape.
-        </p>
-        <div class="about-container">
-          <div class="about-box">
-            <ion-icon name="home-outline" class="about-logo"></ion-icon>
-            <h3 class="about-heading">Home Appraisal</h3>
-            <p class="about-box-description">
-              Our company excels in meticulous home appraisals, leveraging
-              industry expertise to accurately assess property values.With a
-              commitment to precision and thorough analysis, we provide clients
-              with reliable appraisals essential.
-            </p>
-          </div>
-          <div class="about-box">
-            <ion-icon name="people-outline" class="about-logo"></ion-icon>
-            <h3 class="about-heading">Price Negotiation</h3>
-            <p class="about-box-description">
-              Our company stands as a strategic advocate for our clients,
-              skillfully navigating discussions to secure the most favorable
-              terms. With a focus on maximizing value, we employ effective
-              negotiation techniques to ensure our clients achieve best
-              outcomes.
-            </p>
-          </div>
-          <div class="about-box">
-            <ion-icon name="newspaper-outline" class="about-logo"></ion-icon>
-            <h3 class="about-heading">Paperwork Handling</h3>
-            <p class="about-box-description">
-              Efficient paperwork handling is a cornerstone of our services,
-              streamlining the often intricate documentation process for
-              clients. Our meticulous approach ensures all necessary paperwork
-              is managed with precision, facilitating a organized real estate.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section class="section" id="properties">
-        <h2 class="secondary-heading">Our Featured Porperties For Sell</h2>
-        <p class="hero-description about-description">
-          In the dynamic world of property sales, our company showcases a
-          diverse portfolio of listings, offering clients a spectrum of options
-          tailored to their unique preferences.
-        </p>
-        <div class="properties-set">
-          <div class="properties-card container-card">
-            <img
-              src="img/houses/delux.webp"
-              alt="house"
-              class="properties-img"
-            />
-            <div class="properties-container">
-              <p class="properties-loc">
-                <ion-icon name="location-outline"></ion-icon>Bengaluru, India
-              </p>
-              <h3 class="ternary-heading">Best Delux Home</h3>
-              <h3 class="hero-price properties-price">₹67,00,000</h3>
-              <div class="properties-card-container">
-                <div class="properties-cards">
-                  <ion-icon
-                    name="bed-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  3 Bedrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="water-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  4 Bathrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="golf-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  1024 Square feet
-                </div>
-              </div>
-              <p class="properties-description">
-                Surrounded by lush greenery and conveniently situated near a
-                metro station and hospital. The proximity to a nearby park
-                provides a recreational space for children. With excellent
-                safety measures in place, the property boasts a pool and
-                features three bedrooms across two floors, offering a
-                comfortable and family-friendly living environment.
-              </p>
-              <div class="properties-list-links">
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-website-link"
-                  >Take a Tour &rarr;</a
-                >
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-link-logo"
-                  ><ion-icon
-                    name="share-social-outline"
-                    class="properties-source-logo"
-                  ></ion-icon
-                ></a>
-              </div>
-            </div>
-          </div>
-          <div class="properties-card container-card">
-            <div class="properties-container">
-              <p class="properties-loc">
-                <ion-icon name="location-outline"></ion-icon>Mumbai, India
-              </p>
-              <h3 class="ternary-heading">Penthouse Duplex</h3>
-              <h3 class="hero-price properties-price">₹84,00,000</h3>
-              <div class="properties-card-container">
-                <div class="properties-cards">
-                  <ion-icon
-                    name="bed-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  3 Bedrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="water-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  3 Bathrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="golf-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  2048 Square feet
-                </div>
-              </div>
-              <p class="properties-description">
-                A charming house is available for sale, surrounded by lush
-                greenery and conveniently situated near a temple and hospital.
-                The proximity to a children's park enhances the family-friendly
-                environment. With excellent safety features and a dedicated
-                parking garage, this two-story residence boasts four bedrooms,
-                offering a perfect blend of comfort.
-              </p>
-              <div class="properties-list-links">
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-website-link"
-                  >Take a Tour &rarr;</a
-                >
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-link-logo"
-                  ><ion-icon
-                    name="share-social-outline"
-                    class="properties-source-logo"
-                  ></ion-icon
-                ></a>
-              </div>
-            </div>
-            <img
-              src="img/houses/pent-house.webp"
-              alt="house"
-              class="properties-img properties-right"
-            />
-          </div>
-          <div class="properties-card container-card">
-            <img
-              src="img/houses/family-house.webp"
-              alt="house"
-              class="properties-img"
-            />
-            <div class="properties-container">
-              <p class="properties-loc">
-                <ion-icon name="location-outline"></ion-icon>Delhi, India
-              </p>
-              <h3 class="ternary-heading">Family House</h3>
-              <h3 class="hero-price properties-price">₹48,00,000</h3>
-              <div class="properties-card-container">
-                <div class="properties-cards">
-                  <ion-icon
-                    name="bed-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  4 Bedrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="water-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  4 Bathrooms
-                </div>
-                <div class="properties-cards">
-                  <ion-icon
-                    name="golf-outline"
-                    class="properties-card-logo"
-                  ></ion-icon>
-                  1024 Square feet
-                </div>
-              </div>
-              <p class="properties-description">
-                Enveloped in lush greenery, situated near both the metro and a
-                temple. The vicinity includes a nearby children's park,
-                enhancing family-friendly amenities. With a strong emphasis on
-                safety, this two-story residence boasts three bedrooms and
-                features beautifully maintained gardens, offering a harmonious
-                blend of tranquility and convenience.
-              </p>
-              <div class="properties-list-links">
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-website-link"
-                  >Take a Tour &rarr;</a
-                >
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn properties-link properties-link-logo"
-                  ><ion-icon
-                    name="share-social-outline"
-                    class="properties-source-logo"
-                  ></ion-icon
-                ></a>
-              </div>
-            </div>
-          </div>
-          <a href="#" class="properties-more">See more house &rarr;</a>
-        </div>
-      </section>
-      <section class="section" id="testimonial">
-        <h2 class="secondary-heading">What clients say</h2>
-        <div class="testimonial-container">
-          <div class="testimonial-box">
-            <div class="testimonial-card">
-              <img
-                src="img/testimonial/people-1.webp"
-                alt="people"
-                class="testimonial-img"
-              />
-              <div class="testimonial-description">
-                Our house sale surpassed expectations thanks to the outstanding
-                service provided by this real estate team. Their expertise,
-                market knowledge, and commitment to our goals.
-              </div>
-              <p class="testimonial-author">-Sarah Johnson</p>
-            </div>
-            <div class="testimonial-card">
-              <img
-                src="img/testimonial/people-2.webp"
-                alt="people"
-                class="testimonial-img"
-              />
-              <div class="testimonial-description">
-                The agent exceeded our expectations in selling our house. Their
-                expertise and commitment to achieving the best results were
-                evident throughout.
-              </div>
-              <p class="testimonial-author">-Michael Rodriguez</p>
-            </div>
-            <div class="testimonial-card">
-              <img
-                src="img/testimonial/people-3.webp"
-                alt="people"
-                class="testimonial-img"
-              />
-              <div class="testimonial-description">
-                I can't thank the team enough for the exceptional service in
-                selling our home. Their market knowledge, strategic approach,
-                and dedication to our needs resulted in a swift and profitable
-                sale.
-              </div>
-              <p class="testimonial-author">-James Miller</p>
-            </div>
-            <div class="testimonial-card">
-              <img
-                src="img/testimonial/people-4.webp"
-                alt="people"
-                class="testimonial-img"
-              />
-              <div class="testimonial-description">
-                Our recent home sale experience was excellent. The real estate
-                team demonstrated a high level of professionalism and We
-                appreciated their dedication to achieving the best result.
-              </div>
-              <p class="testimonial-author">-David Martinez</p>
-            </div>
-          </div>
-          <div class="testimonial-box img-box">
-            <div class="testimonial-photo-box">
-              <img
-                src="img/houses/testimonial/houses-1.webp"
-                alt="house"
-                class="testimonial-photo"
-              />
-            </div>
-            <div class="testimonial-photo-box">
-              <img
-                src="img/houses/testimonial/houses-2.webp"
-                alt="house"
-                class="testimonial-photo"
-              />
-            </div>
-            <div class="testimonial-photo-box">
-              <img
-                src="img/houses/testimonial/houses-3.webp"
-                alt="house"
-                class="testimonial-photo"
-              />
-            </div>
-            <div class="testimonial-photo-box">
-              <img
-                src="img/houses/testimonial/houses-4.webp"
-                alt="house"
-                class="testimonial-photo"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="section" id="contact">
-        <h2 class="secondary-heading contact-heading">Get In Touch With Us</h2>
-        <div class="contact-container">
-          <div class="contact-box">
-            <label for="name" class="contact-label">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              class="contact-input"
-              placeholder="James Miller"
-            />
-          </div>
-          <div class="contact-box">
-            <label for="email" class="contact-label">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              class="contact-input"
-              placeholder="james23miller@gmail.com"
-            />
-          </div>
-          <div class="contact-box contact-house">
-            <label for="house" class="contact-label">I'm Looking for</label>
-            <input
-              type="house"
-              name="name"
-              class="contact-input"
-              placeholder="3 Bedroom villa apartment"
-            />
-          </div>
-          <div class="contact-box contact-house">
-            <label for="message" class="contact-label">Your Message</label>
-            <textarea
-              name="message"
-              id=""
-              cols="30"
-              rows="10"
-              placeholder="Please write in brief.."
-              class="contact-input"
-            ></textarea>
-          </div>
-        </div>
-        <div class="contact-link">
-          <a href="#" target="_blank" class="btn properties-link"
-            >Send Message &rarr;</a
-          >
-        </div>
-      </section>
-    </main>
-    <footer class="footer" id="contact">
-      <div class="footer-container">
-        <a href="#">
-          <img src="img/logo.webp" alt="logo" class="footer-logo" />
-        </a>
-        <p class="copyright">© 2024 - All rights reserved by Housing.com</p>
-      </div>
-      <div class="footer-container social-container">
-        <h3 class="footer-heading">Social Links</h3>
-        <div class="social-links-list">
-          <a
-            href="https://github.com/adiga27"
-            target="_blank"
-            rel=""
-            class="social-link"
-          >
-            <ion-icon name="logo-github" class="footer-social-logo"></ion-icon>
-            <p class="social">Github</p>
-          </a>
-          <a
-            href="https://in.linkedin.com/in/adiga27?trk=people-guest_people_search-card"
-            target="_blank"
-            rel=""
-            class="social-link"
-          >
-            <ion-icon
-              name="logo-linkedin"
-              class="footer-social-logo"
-            ></ion-icon>
-            <p class="social">Linkedin</p>
-          </a>
-          <a
-            href="https://www.facebook.com/krishna.adiga.927"
-            target="_blank"
-            rel=""
-            class="social-link"
-          >
-            <ion-icon
-              name="logo-facebook"
-              class="footer-social-logo"
-            ></ion-icon>
-            <p class="social">Facebook</p>
-          </a>
-          <a
-            href="https://www.instagram.com/the_adiga_/"
-            target="_blank"
-            rel=""
-            class="social-link"
-          >
-            <ion-icon
-              name="logo-instagram"
-              class="footer-social-logo"
-            ></ion-icon>
-            <p class="social">Instagram</p>
-          </a>
+
+        <div class="modal-section">
+          <h4>Kinh nghiệm nổi bật</h4>
+          <ul id="modalHighlights">
+            <!-- được fill bằng JavaScript -->
+          </ul>
         </div>
       </div>
-      <div class="footer-container">
-        <h3 class="footer-heading">Contact</h3>
-        <address class="address">
-          56, 1, Group Layout, Main Road, State, Country - 535363
-        </address>
-        <address class="contact">
-          <a class="social-link" href="tel:9999999999">9999999999</a><br />
-          <a class="social-link" href="mailto:example@gmail.com"
-            >example@gmail.com</a
-          >
-        </address>
-      </div>
-    </footer>
-  </body>
+    </div>
+  </div>
+
+  <script>
+    // ========== DATA PROFILE (DEMO) ==========
+    // Trong thực tế bạn có thể load từ JSON / API
+    const PROFILE_DATA = {
+      m001: {
+        avatar: "https://via.placeholder.com/150x150?text=BL",
+        name: "Phạm Hoàng Bảo Long",
+        title: "Software Engineer",
+        company: "Bosch Global Software Technologies",
+        location: "TP.HCM, Việt Nam",
+        field: "Công nghệ",
+        bio:
+          "Kỹ sư phần mềm tập trung vào các giải pháp AI, MBD và hệ thống nhúng. " +
+          "Đam mê xây dựng các nền tảng nội bộ giúp tối ưu hoá quy trình làm việc cho team.",
+        highlights: [
+          "Phát triển chatbot nội bộ hỗ trợ kỹ sư sử dụng ASCET & AUTOSAR",
+          "Đồng sáng lập các dự án cộng đồng về AI cho sinh viên và bạn trẻ",
+          "Kinh nghiệm xây dựng pipeline MLOps và ứng dụng AI vào sản phẩm"
+        ]
+      },
+      m002: {
+        avatar: "https://via.placeholder.com/150x150?text=H",
+        name: "Tô Phương Huy",
+        title: "RM",
+        company: "Techcombank",
+        location: "Hạ Long, Quảng Ninh",
+        field: "Ngân hàng",
+        bio:
+          "Chuyên viên cao cấp trong mảng quan hệ khách hàng cá nhân, tập trung " +
+          "vào tư vấn giải pháp tài chính và đầu tư dài hạn cho khách hàng VIP.",
+        highlights: [
+          "Quản lý danh mục khách hàng VIP với quy mô lớn",
+          "Thiết kế gói giải pháp tài chính cá nhân hoá",
+          "Đồng hành trong các chương trình tài chính cộng đồng"
+        ]
+      },
+      m003: {
+        avatar: "https://via.placeholder.com/150x150?text=QA",
+        name: "Nguyễn Hà Quỳnh Anh",
+        title: "Product Marketing",
+        company: "FPT Software, STEAM for VIETNAM",
+        location: "Hà Nội, Việt Nam",
+        field: "Giáo dục",
+        bio:
+          "Làm việc trong mảng Product Marketing với trọng tâm là các sản phẩm" +
+          " giáo dục công nghệ, mang trải nghiệm học tập số đến với nhiều học sinh.",
+        highlights: [
+          "Tham gia xây dựng chiến lược go-to-market cho sản phẩm edtech",
+          "Định hướng nội dung truyền thông cho các chương trình STEAM",
+          "Kết nối network mentor – mentee trong lĩnh vực giáo dục"
+        ]
+      }
+    };
+
+    // ========== FILTER LOGIC ==========
+    const nameInput = document.getElementById("filterName");
+    const titleInput = document.getElementById("filterTitle");
+    const companyInput = document.getElementById("filterCompany");
+    const fieldSelect = document.getElementById("filterField");
+    const clearBtn = document.getElementById("btnClearFilters");
+    const grid = document.getElementById("membersGrid");
+    const cards = Array.from(grid.getElementsByClassName("member-card"));
+    const visibleCountEl = document.getElementById("visibleCount");
+    const totalCountEl = document.getElementById("totalCount");
+
+    totalCountEl.textContent = cards.length.toString();
+
+    function applyFilters() {
+      const nameValue = nameInput.value.trim().toLowerCase();
+      const titleValue = titleInput.value.trim().toLowerCase();
+      const companyValue = companyInput.value.trim().toLowerCase();
+      const fieldValue = fieldSelect.value;
+
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const cardName = card.dataset.name.toLowerCase();
+        const cardTitle = card.dataset.title.toLowerCase();
+        const cardCompany = card.dataset.company.toLowerCase();
+        const cardField = card.dataset.field;
+
+        let matched = true;
+
+        if (nameValue && !cardName.includes(nameValue)) matched = false;
+        if (titleValue && !cardTitle.includes(titleValue)) matched = false;
+        if (companyValue && !cardCompany.includes(companyValue)) matched = false;
+        if (fieldValue && fieldValue !== cardField) matched = false;
+
+        if (matched) {
+          card.style.display = "flex";
+          visible += 1;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      visibleCountEl.textContent = visible.toString();
+    }
+
+    nameInput.addEventListener("input", applyFilters);
+    titleInput.addEventListener("input", applyFilters);
+    companyInput.addEventListener("input", applyFilters);
+    fieldSelect.addEventListener("change", applyFilters);
+
+    clearBtn.addEventListener("click", () => {
+      nameInput.value = "";
+      titleInput.value = "";
+      companyInput.value = "";
+      fieldSelect.value = "";
+      applyFilters();
+    });
+
+    // ========== MODAL LOGIC ==========
+    const modal = document.getElementById("profileModal");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    const modalAvatar = document.getElementById("modalAvatar");
+    const modalName = document.getElementById("modalName");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCompany = document.getElementById("modalCompany");
+    const modalLocation = document.getElementById("modalLocation");
+    const modalFieldChip = document.getElementById("modalFieldChip");
+    const modalBio = document.getElementById("modalBio");
+    const modalHighlights = document.getElementById("modalHighlights");
+
+    function openProfile(memberId) {
+      const data = PROFILE_DATA[memberId];
+      if (!data) return;
+
+      modalAvatar.src = data.avatar;
+      modalName.textContent = data.name;
+      modalTitle.textContent = data.title;
+      modalCompany.textContent = data.company;
+      modalLocation.textContent = data.location;
+      modalFieldChip.textContent = data.field;
+      modalBio.textContent = data.bio;
+
+      modalHighlights.innerHTML = "";
+      (data.highlights || []).forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        modalHighlights.appendChild(li);
+      });
+
+      modal.classList.add("active");
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+    }
+
+    // Bind click on each "View Profile"
+    cards.forEach((card) => {
+      const btn = card.querySelector(".btn-view");
+      const memberId = card.dataset.memberId;
+      btn.addEventListener("click", () => openProfile(memberId));
+    });
+
+    modalCloseBtn.addEventListener("click", closeModal);
+
+    // Click outside dialog to close
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // ESC to close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
 </html>
