@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Global Shapers – Participants Catalogue</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg-page: #f3f4f6;
+      --page-bg: #ffffff;
+      --accent: #0044a5;
+      --accent-soft: #e5e7eb;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      background: var(--bg-page);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      color: var(--text-main);
+    }
+
+    /* ========== TOOLBAR (web view) ========== */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(243, 244, 246, 0.95);
+      backdrop-filter: blur(6px);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .toolbar-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .toolbar button {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .toolbar button.primary {
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+    }
+
+    .book {
+      max-width: 900px;
+      margin: 16px auto 40px;
+      padding: 0 10px 30px;
+    }
+
+    /* ========== TRANG A4 CHUNG ========== */
+    .page {
+      width: 794px;
+      height: 1123px;
+      margin: 16px auto;
+      background: var(--page-bg);
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ========== BÌA ========== */
+    .page.cover {
+      color: #ffffff;
+      background: #0044a5 !important;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.18);
+    }
+
+    .page.cover::after {
+      content: "";
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      bottom: -22%;
+      height: 55%;
+      background: radial-gradient(
+        circle at 50% 0,
+        #0044a5 0,
+        #00357f 40%,
+        #001b4f 75%
+      );
+    }
+
+    .page.cover::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      right: -35%;
+      width: 80%;
+      height: 80%;
+      background: linear-gradient(135deg, #1d7ff5, #0067e0);
+      transform: rotate(-12deg);
+      opacity: 0.95;
+    }
+
+    .cover-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      padding: 70px 70px 80px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cover-header-logos {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 80px;
+    }
+
+    .cover-logo-left,
+    .cover-logo-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .cover-logo-left span,
+    .cover-logo-right span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.12);
+      line-height: 1.3;
+    }
+
+    .cover-text-block {
+      max-width: 460px;
+    }
+
+    .cover-small-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    .cover-main-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .cover-location {
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .cover-date {
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .cover-footer-tag {
+      margin-top: auto;
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    /* ========== TRANG THÀNH VIÊN – KIỂU WEF ========== */
+
+    .page-header-band {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: #ffffff; /* trắng, giống sách thật */
+    }
+
+    .members-page {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 40px 56px 80px;
+    }
+
+    .member-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      column-gap: 22px;
+      padding-top: 18px;
+      padding-bottom: 18px;
+      border-top: 1px solid #d4d4d4;
+      position: relative;
+    }
+
+    /* đường kẻ xanh mảnh phía trên mỗi entry */
+    .member-row::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #0067e0;
+    }
+
+    .member-left {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .member-photo {
+      width: 110px;
+      height: 140px;
+      object-fit: cover;
+      margin-bottom: 8px;
+      border: 1px solid #d4d4d4;
+    }
+
+    .member-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0057b8;
+      margin-bottom: 2px;
+    }
+
+    .member-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .member-country {
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+    }
+
+    .member-tag,
+    .member-centre {
+      font-size: 0.78rem;
+      margin-bottom: 2px;
+    }
+
+    .member-right {
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: #111827;
+    }
+
+    .org-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0057b8;
+      margin-bottom: 3px;
+    }
+
+    .org-tagline {
+      font-size: 0.87rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .org-body {
+      font-size: 0.84rem;
+      text-align: justify;
+    }
+
+    .org-body strong {
+      font-weight: 700;
+    }
+
+    .page-footer {
+      position: absolute;
+      left: 56px;
+      right: 56px;
+      bottom: 24px;
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 4px;
+    }
+
+    .page-footer span.page-number::before {
+      content: "";
+    }
+
+    /* ========== PRINT STYLE ========== */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+      }
+
+      .toolbar {
+        display: none;
+      }
+
+      .book {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        page-break-after: always;
+        overflow: hidden;
+      }
+
+      .page:last-of-type {
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Toolbar khi xem web -->
+  <div class="toolbar">
+    <div class="toolbar-title">
+      Global Shapers – Participants Catalogue
+    </div>
+    <div>
+      <button onclick="window.location.href='index.html'">
+        ← Back to Portal
+      </button>
+      <button class="primary" onclick="window.print()">
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <main class="book">
+    <!-- ========== COVER PAGE ========== -->
+    <section class="page cover">
+      <div class="cover-inner">
+        <div class="cover-header-logos">
+          <div class="cover-logo-left">
+            <img src="logos/gsc.png" alt="Global Shapers Community" height="120" />
+          </div>
+          <div class="cover-logo-right">
+            <img src="logos/wef.png" alt="World Economic Forum" height="130" />
+          </div>
+        </div>
+
+        <div class="cover-text-block">
+          <div class="cover-small-title">
+            GLOBAL SHAPERS COMMUNITY · HO CHI MINH CITY HUB
+          </div>
+          <div class="cover-main-title">
+            Global Shapers HCMC<br/> Directory
+          </div>
+          <div class="cover-location">
+            HO CHI MINH CITY · VIET NAM
+          </div>
+          <div class="cover-date">
+            DECEMBER 2025
+          </div>
+        </div>
+
+        <div class="cover-footer-tag">
+          Internal use · Global Shapers HCMC Directory 
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PAGE 1 – 2 MEMBERS ========== -->
+    <section class="page">
+      <div class="page-header-band"></div>
+
+      <div class="members-page">
+        <!-- Member 1: Bảo Long -->
+        <article class="member-row">
+          <div class="member-left">
+            <img src="avatar.jpg" alt="Bảo Long" class="member-photo" />
+            <div class="member-name">Phạm Hoàng <br> Bảo Long</div>
+            <div class="member-title">Software Engineer</div>
+            <div class="member-country">Viet Nam</div>
+            <div class="member-tag">Active Member, <br> HCMC Hub</div>
+            <div class="member-centre">Focus: AI, IoT & Embedded Systems</div>
+          </div>
+          <div class="member-right">
+            <h2 class="org-name">Bosch Global Software Technologies</h2>
+            <div class="org-tagline">
+              Building AI-powered tools and platforms for engineering teams
+            </div>
+            <p class="org-body">
+              <strong>Profile:</strong> Long is a software engineer focusing on
+              AI, IoT and embedded systems. At Bosch Global Software
+              Technologies, he develops internal platforms and AI assistants
+              that help engineering teams automate workflows, improve code
+              quality and accelerate innovation. Beyond his corporate work, Long
+              co-leads community projects that introduce AI and digital skills
+              to students and young professionals, and is passionate about
+              making advanced technologies more accessible in Viet Nam.
+            </p>
+          </div>
+        </article>
+
+        <!-- Member 2: Bác Trang -->
+        <article class="member-row">
+          <div class="member-left">
+            <img src="BacTrang.jpg" alt="Bác Trang" class="member-photo" />
+            <div class="member-name">Bác Trang</div>
+            <div class="member-title">
+              Senior Business Intelligence Analyst
+            </div>
+            <div class="member-country">Viet Nam</div>
+            <div class="member-tag">Active Member, <br> HCMC Hub</div>
+            <div class="member-centre">Focus: E-commerce & Data Analytics</div>
+          </div>
+          <div class="member-right">
+            <h2 class="org-name">Leading E-commerce Platform</h2>
+            <div class="org-tagline">
+              Turning complex data into insights for customer-centric growth
+            </div>
+            <p class="org-body">
+              <strong>Profile:</strong> Trang is a senior business intelligence
+              analyst in a major e-commerce company, where she designs and
+              manages analytics systems for large portfolios of key accounts and
+              VIP customers. She leads the ChangeMakers Series project,
+              combining data, storytelling and community building to empower
+              young professionals. Known in the Hub for her “legendary” forms
+              and spreadsheets, she helps teams structure information clearly
+              and make better, faster decisions.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <footer class="page-footer">
+        <span>Global Shapers HCMC Directory</span>
+        <span class="page-number">1</span>
+      </footer>
+    </section>
+
+    <!-- ========== PAGE 2 – 2 MEMBERS (ví dụ placeholder) ========== -->
+    <section class="page">
+      <div class="page-header-band"></div>
+
+      <div class="members-page">
+        <!-- Member 3: Anh Mỹ -->
+        <article class="member-row">
+          <div class="member-left">
+            <img src="AnhMy.jpg" alt="Anh Mỹ" class="member-photo" />
+            <div class="member-name">Anh Mỹ</div>
+            <div class="member-title">Policy Advisor</div>
+            <div class="member-country">Viet Nam</div>
+            <div class="member-tag">Impact Officer, <br> HCMC Hub</div>
+            <div class="member-centre">
+              Focus: Public Policy & Digital Transformation
+            </div>
+          </div>
+          <div class="member-right">
+            <h2 class="org-name">
+              Vietnam C4IR – Centre for the Fourth Industrial Revolution
+            </h2>
+            <div class="org-tagline">
+              Shaping agile policy frameworks for emerging technologies
+            </div>
+            <p class="org-body">
+              <strong>Profile:</strong> Mỹ works at the Vietnam Centre for the
+              Fourth Industrial Revolution (C4IR) in Ho Chi Minh City, advising
+              public agencies and businesses on digital transformation and
+              technology governance. As Impact Officer and Project Committee
+              Lead at the Hub, she has helped design and deliver the Autumn
+              Economic Forum and other flagship initiatives that connect youth,
+              policymakers and industry leaders. She is committed to making
+              technology policy more inclusive, evidence-based and responsive to
+              community needs.
+            </p>
+          </div>
+        </article>
+
+        <!-- Member 4: ví dụ placeholder – cập nhật theo thực tế -->
+        <article class="member-row">
+          <div class="member-left">
+            <img src="Nick.jpg" alt="Shaper Name" class="member-photo" />
+            <div class="member-name">Nick & Judy</div>
+            <div class="member-title">zootopia 2</div>
+            <div class="member-country">United State</div>
+            <div class="member-tag">Active Member, HCMC Hub</div>
+            <div class="member-centre">Focus: buddy cop</div>
+          </div>
+          <div class="member-right">
+            <h2 class="org-name">Walt Disney Animation Studios / Zootopia 2</h2>
+            <div class="org-tagline">
+                Ngày phát hành: 28 tháng 11, 2025 (Việt Nam) <br>
+                Đạo diễn: Jared Bush, Byron Howard <br>
+                Diễn viên: Ginnifer Goodwin; Jason Bateman; Quan Kế Huy; Fortune Feimster <br>
+                Thời lượng: 1 giờ 48 phút
+            </div>
+            <p class="org-body">
+              <strong>Profile:</strong> 
+              Zootopia: Phi vụ động trời 2 là bộ phim hoạt hình thuộc thể loại hài buddy cop của Hoa Kỳ 
+              được sản xuất bởi Walt Disney Animation Studios và do Walt Disney Pictures phát hành.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <footer class="page-footer">
+        <span>Global Shapers HCMC Directory</span>
+        <span class="page-number">2</span>
+      </footer>
+    </section>
+
+    <!-- Thêm các section.page tương tự để bổ sung thành viên -->
+  </main>
+
+  <script>
+    // Sau này bạn có thể load dữ liệu từ JSON và generate member-row tự động.
+  </script>
+</body>
+</html>
