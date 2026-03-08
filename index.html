@@ -2,35 +2,28 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Members Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>Global Shapers Directory</title>
   <style>
-  :root {
-    --bg: #f5f7fb;
-    --card-bg: #ffffff;
-    --primary: #2563eb;
-    --primary-soft: #eff4ff;
-    --border: #e2e8f0;
-    --text-main: #1f2933;
-    --text-muted: #6b7280;
-    --radius-lg: 18px;
-    --radius-full: 999px;
-    --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
-
-    --border-soft: #d1d5db;
-    --accent: #111827;
-  }
-
-
-    * {
-      box-sizing: border-box;
+    :root {
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --border: #e2e8f0;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --radius-lg: 18px;
+      --radius-full: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --accent: #111827;
+      --border-soft: #d1d5db;
     }
+
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text-main);
     }
@@ -46,39 +39,43 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     header h1 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
+      margin: 0;
     }
 
     .view-toggle {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
     .view-label {
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .view-toggle-group {
-      gap: 8px; 
       display: inline-flex;
-      background: transparent;
+      gap: 8px;
       padding: 3px;
       border-radius: 999px;
     }
 
     .toggle-btn {
       border: 1px solid var(--border-soft);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
       background: #fff;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: #111827;
     }
 
     .toggle-btn.active {
@@ -86,15 +83,6 @@
       color: #fff;
       border-color: var(--accent);
     }
-
-    /* Container chung */
-    .dashboard {
-      display: grid;
-      gap: 16px;
-      transition: all 0.2s ease;
-    }
-
-    /* ================= HEADER & FILTER ================= */
 
     .search-card {
       background: var(--card-bg);
@@ -110,6 +98,7 @@
       align-items: center;
       margin-bottom: 16px;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .search-title-group h2 {
@@ -170,15 +159,6 @@
       border: 1px solid var(--border);
       outline: none;
       background: #f9fafb;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease,
-        background-color 0.18s ease;
-    }
-
-    .filter-input:focus,
-    .filter-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
-      background: #ffffff;
     }
 
     .filter-footer {
@@ -187,6 +167,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .btn-clear {
@@ -200,17 +181,7 @@
       font-size: 13px;
       cursor: pointer;
       color: var(--text-muted);
-      transition: background 0.18s ease, border-color 0.18s ease,
-        color 0.18s ease;
     }
-
-    .btn-clear:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-      color: var(--text-main);
-    }
-
-    /* ================= GRID & CARD ================= */
 
     .grid {
       display: grid;
@@ -249,6 +220,7 @@
       border: 3px solid #e5edff;
       box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
       margin-bottom: 14px;
+      flex-shrink: 0;
     }
 
     .avatar-wrapper img {
@@ -263,17 +235,11 @@
       margin-bottom: 6px;
     }
 
-    .member-field {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
     .member-company {
       font-size: 13px;
       color: var(--primary);
       font-weight: 500;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .member-title {
@@ -297,141 +263,14 @@
       cursor: pointer;
       background: var(--primary);
       color: #ffffff;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
-      transition: background 0.18s ease, transform 0.12s ease,
-        box-shadow 0.18s ease;
     }
 
-    .btn-view:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.45);
+    .status {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
     }
-
-    .btn-view:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-    /* ========== GRID MODE (dashboard) ========== */
-    .grid-mode .profile-card {
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-card);
-      border-radius: 12px;
-      padding: 14px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-    }
-
-    .grid-mode {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    /* ========== CATALOG MODE (full-width list) ========== */
-    .catalog-mode {
-      grid-template-columns: 1fr;
-    }
-
-    .catalog-mode .profile-card {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 16px;
-      background: #f9fafb;
-      border-top: 1px solid var(--border-soft);
-      border-bottom: 1px solid var(--border-soft);
-      border-radius: 0;
-      padding: 18px 20px;
-      box-shadow: none;
-    }
-
-    /* avatar */
-    .avatar-wrapper {
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #d1d5db;
-    }
-
-    /* content */
-    .profile-content h2 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .meta {
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      margin-bottom: 4px;
-    }
-
-    .meta span + span::before {
-      content: "•";
-      margin: 0 6px;
-    }
-
-    .region {
-      font-size: 0.86rem;
-      color: var(--text-sub);
-      margin-bottom: 8px;
-    }
-
-    .bio {
-      font-size: 0.88rem;
-      line-height: 1.4;
-      color: #4b5563;
-      margin-bottom: 10px;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-      color: var(--text-sub);
-    }
-
-    .pill {
-      border-radius: 999px;
-      padding: 3px 10px;
-      border: 1px solid #d1d5db;
-      font-size: 0.75rem;
-      white-space: nowrap;
-    }
-
-    .btn-link {
-      border: none;
-      background: none;
-      color: #2563eb;
-      font-size: 0.85rem;
-      cursor: pointer;
-      text-decoration: underline;
-      padding: 0;
-    }
-
-    @media (max-width: 640px) {
-      .catalog-mode .profile-card {
-        grid-template-columns: 1fr;
-      }
-      .avatar-wrapper {
-        margin-bottom: 8px;
-      }
-      .avatar {
-        width: 60px;
-        height: 60px;
-      }
-    }
-    /* ================= MODAL PROFILE ================= */
 
     .modal-backdrop {
       position: fixed;
@@ -441,6 +280,7 @@
       align-items: center;
       justify-content: center;
       z-index: 50;
+      padding: 16px;
     }
 
     .modal-backdrop.active {
@@ -448,20 +288,17 @@
     }
 
     .modal-dialog {
-      background: #ffffff;
-      border-radius: 24px;
-      max-width: 720px;
-      width: 100%;
-      padding: 20px 24px 22px;
-      box-shadow: 0 28px 70px rgba(15, 23, 42, 0.35);
-      position: relative;
-    }
-
-    @media (max-width: 720px) {
-      .modal-dialog {
-        margin: 0 12px;
-        padding: 18px 16px 18px;
-      }
+    background: #ffffff;
+    border-radius: 24px;
+    max-width: 720px;
+    width: min(720px, 100%);
+    height: min(80vh, 620px);
+    padding: 20px 24px 22px;
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.35);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     }
 
     .modal-close {
@@ -485,9 +322,10 @@
     .modal-avatar {
       width: 80px;
       height: 80px;
-      border-radius: var(--radius-full);
+      border-radius: 999px;
       overflow: hidden;
       border: 2px solid #e5edff;
+      flex-shrink: 0;
     }
 
     .modal-avatar img {
@@ -507,29 +345,31 @@
       color: var(--text-muted);
     }
 
-    .modal-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .chip {
-      font-size: 11px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-
     .modal-body {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--text-main);
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text-main);
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
     }
 
-    .modal-section {
-      margin-top: 10px;
+    .modal-body::-webkit-scrollbar {
+    width: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 999px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
     }
 
     .modal-section h4 {
@@ -540,162 +380,68 @@
       color: var(--text-muted);
     }
 
-    .modal-section ul {
-      margin: 4px 0 0;
-      padding-left: 18px;
-    }
-
-    .modal-section li {
-      margin-bottom: 3px;
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
   <div class="page">
     <header>
-      <h1>Global Shapers – AI & Tech Catalogue</h1>
+      <h1>Global Shapers HCMC Directory</h1>
       <div class="view-toggle">
         <span class="view-label">View:</span>
         <div class="view-toggle-group">
-          <button class="toggle-btn active" id="btnDashboard">Dashboard</button>
-          <!-- <button class="toggle-btn" id="btnCatalogue">Catalogue</button> -->
-          <button class="toggle-btn" id="btnBooklet">Catalogue</button>
+          <a class="toggle-btn active" href="index.html">Dashboard</a>
+          <a class="toggle-btn" href="catalogue.html">Catalogue</a>
         </div>
       </div>
     </header>
-    <!-- SEARCH + FILTER CARD -->
+
     <section class="search-card">
       <div class="search-header">
         <div class="search-title-group">
           <h2>Search Members</h2>
-          <p>Tìm kiếm và lọc theo tên, vị trí, tổ chức, lĩnh vực...</p>
+          <p>Search and filter by name, role, organization, hub/location, etc.</p>
         </div>
         <div class="search-count">
-          Showing <span id="visibleCount">3</span> of
-          <span id="totalCount">3</span> members
+          Showing <span id="visibleCount">0</span> of
+          <span id="totalCount">0</span> members
         </div>
       </div>
 
       <div class="filters-row">
         <div class="filter-group">
-          <span class="filter-label">Tên</span>
-          <input
-            id="filterName"
-            class="filter-input"
-            type="text"
-            placeholder="Search by name..."
-          />
+          <span class="filter-label">Name</span>
+          <input id="filterName" class="filter-input" type="text" placeholder="Search by name..." />
         </div>
 
         <div class="filter-group">
-          <span class="filter-label">Vị trí công việc</span>
-          <input
-            id="filterTitle"
-            class="filter-input"
-            type="text"
-            placeholder="Search by title..."
-          />
+          <span class="filter-label">Role</span>
+          <input id="filterRole" class="filter-input" type="text" placeholder="Search by role..." />
         </div>
 
         <div class="filter-group">
-          <span class="filter-label">Tổ chức</span>
-          <input
-            id="filterCompany"
-            class="filter-input"
-            type="text"
-            placeholder="Search by company..."
-          />
+          <span class="filter-label">Organization</span>
+          <input id="filterCompany" class="filter-input" type="text" placeholder="Search by Organization..." />
         </div>
 
         <div class="filter-group">
-          <span class="filter-label">Lĩnh vực</span>
-          <select id="filterField" class="filter-select">
-            <option value="">Tất cả</option>
-            <option value="Công nghệ">Công nghệ</option>
-            <option value="Ngân hàng">Ngân hàng</option>
-            <option value="Giáo dục">Giáo dục</option>
-          </select>
+          <span class="filter-label">Hub / Location</span>
+          <input id="filterLocation" class="filter-input" type="text" placeholder="Search by location..." />
         </div>
       </div>
 
       <div class="filter-footer">
-        <button id="btnClearFilters" class="btn-clear">
-          &#10005; Clear All Filters
-        </button>
+        <button id="btnClearFilters" class="btn-clear">&#10005; Clear All Filters</button>
       </div>
     </section>
 
-    <!-- GRID MEMBERS -->
     <section class="grid" id="membersGrid">
-      <!-- Card 1 -->
-      <article
-        class="member-card"
-        data-member-id="m001"
-        data-name="Phạm Hoàng Bảo Long"
-        data-title="Software Engineer"
-        data-company="Bosch Global Software Technologies"
-        data-field="Công nghệ"
-      >
-        <div class="avatar-wrapper">
-          <img src="avatar.jpg" alt="Avatar" />
-        </div>
-        <div class="member-name">Phạm Hoàng Bảo Long</div>
-        <div class="member-field">Lĩnh vực: Công nghệ, phần mềm</div>
-        <div class="member-company">
-          Bosch Global Software Technologies
-        </div>
-        <div class="member-title">Software Engineer</div>
-        <div class="member-location">TP.HCM, Việt Nam</div>
-        <button class="btn-view">View Profile</button>
-      </article>
-
-      <!-- Card 2 -->
-      <article
-        class="member-card"
-        data-member-id="m002"
-        data-name="Bác Trang"
-        data-title="RM"
-        data-company="Shopee"
-        data-field="Thương mại điện tử"
-      >
-        <div class="avatar-wrapper">
-          <img src="BacTrang.jpg" alt="Avatar" />
-        </div>
-        <div class="member-name">Bác Trang</div>
-        <div class="member-field">
-          Lĩnh vực: Thương mại điện tử"
-        </div>
-        <div class="member-company">Shopee</div>
-        <div class="member-title">
-          Senior Business Intelligence Analyst
-        </div>
-        <div class="member-location">TP.HCM, Việt Nam</div>
-        <button class="btn-view">View Profile</button>
-      </article>
-
-      <!-- Card 3 -->
-      <article
-        class="member-card"
-        data-member-id="m003"
-        data-name="Anh Mỹ"
-        data-title="Chuyên viên tư vấn chính sách"
-        data-company="Vietnam C4IR-Trung tâm Cách mạng công nghiệp lần thứ 4 tại Tp.HCM"
-        data-field="Hành Chính"
-      >
-        <div class="avatar-wrapper">
-          <img src="AnhMy.jpg" alt="Avatar" />
-        </div>
-        <div class="member-name">Anh Mỹ </div>
-        <div class="member-field">Lĩnh vực: Luật, Chính sách</div>
-        <div class="member-company">Vietnam C4IR-Trung tâm Cách mạng công nghiệp lần thứ 4 tại Tp.HCM</div>
-        <div class="member-title">Chuyên viên tư vấn chính sách</div>
-        <div class="member-location">TP.HCM, Việt Nam</div>
-        <button class="btn-view">View Profile</button>
-      </article>
+      <div class="status">Loading data...</div>
     </section>
   </div>
 
-  <!-- MODAL PROFILE -->
   <div class="modal-backdrop" id="profileModal">
     <div class="modal-dialog">
       <button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -706,200 +452,158 @@
         </div>
         <div class="modal-info-primary">
           <h3 id="modalName">Name</h3>
-          <p id="modalTitle">Job Title</p>
-          <p id="modalCompany">Company</p>
+          <p id="modalCompany" style="color:#2563eb; font-weight:500;">Company</p>
+          <p id="modalEmail">Email</p>
+          <p id="modalRole">Role</p>
           <p id="modalLocation">Location</p>
-
-          <div class="modal-chip-row">
-            <span class="chip" id="modalFieldChip">Lĩnh vực</span>
-          </div>
         </div>
       </div>
 
       <div class="modal-body">
         <div class="modal-section">
-          <h4>Giới thiệu</h4>
-          <p id="modalBio">
-            Đây là phần mô tả ngắn về thành viên. Bạn có thể cập nhật nội dung
-            này từ dữ liệu thực tế.
-          </p>
-        </div>
-
-        <div class="modal-section">
-          <h4>Kinh nghiệm nổi bật</h4>
-          <ul id="modalHighlights">
-            <!-- được fill bằng JavaScript -->
-          </ul>
+          <h4>Giới thiệu (Biography)</h4>
+          <p id="modalBio" style="line-height:1.6;"></p>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // ========== DATA PROFILE (DEMO) ==========
-    // Trong thực tế bạn có thể load từ JSON / API
-    const PROFILE_DATA = {
-      m001: {
-        avatar: "avatar.jpg",
-        name: "Phạm Hoàng Bảo Long",
-        title: "Software Engineer",
-        company: "Bosch Global Software Technologies",
-        location: "TP.HCM, Việt Nam",
-        field: "Công nghệ",
-        bio:
-          "Kỹ sư phần mềm tập trung vào các giải pháp AI, IoT và hệ thống nhúng. " +
-          "Đam mê xây dựng các nền tảng nội bộ giúp tối ưu hoá quy trình làm việc cho team.",
-        highlights: [
-          "Phát triển chatbot, ứng dụng AI trong kỹ thuật tự động hoá và dịch vụ",
-          "Đồng sáng lập các dự án cộng đồng về AI cho sinh viên và bạn trẻ",
-          "Kinh nghiệm xây dựng pipeline MLOps và ứng dụng AI vào sản phẩm"
-        ]
-      },
-      m002: {
-        avatar: "BacTrang.jpg",
-        name: "Bác Trang",
-        title: "Senior Business Intelligence Analyst",
-        company: "Công ty S",
-        location: "TP.HCM, Việt Nam",
-        field: "Thương mại điện tử",
-        bio:
-          "Chuyên viên cao cấp trong mảng phân tích dữ liệu kinh doanh cho cty S ",
-        highlights: [
-          "Quản lý danh mục khách hàng VIP với quy mô lớn",
-          "Quản lý Project ChangeMakers Series",
-          "Làm form làm sheet siêu xịn"
-        ]
-      },
-      m003: {
-        avatar: "AnhMy.jpg",
-        name: "Anh Mỹ",
-        title: "Chuyên vien tư vấn chính sách",
-        company: "Vietnam C4IR-Trung tâm Cách mạng công nghiệp lần thứ 4 tại Tp.HCM",
-        location: "TP.HCM, Việt Nam",
-        field: "Hành chính",
-        bio:
-          "Làm việc trong ở Trung tâm Cách mạng công nghiệp lần thứ 4 tại Tp.HCM" +
-          "tư vấn chính sách về chuyển đổi số và công nghệ cho các cơ quan nhà nước và doanh nghiệp.",
-        highlights: [
-          "Vừa tổ chức thành công xuất sắc Diễn đàn kinh tế mùa thu 2025",
-          "Là Impact Officer, kiêm Project Committee Lead",
-          "Hay bất ổn với thích uống rượu"
-        ]
-      }
-    };
+    const API_URL = "https://script.google.com/macros/s/AKfycbzw92Jq3QimCpARVl_4hajgBo7ZOCFKytJA2kNlI7CMza4RP_dOt24sZen2bg8bDJIO/exec";
 
-    // ========== FILTER LOGIC ==========
-    const nameInput = document.getElementById("filterName");
-    const titleInput = document.getElementById("filterTitle");
-    const companyInput = document.getElementById("filterCompany");
-    const fieldSelect = document.getElementById("filterField");
-    const clearBtn = document.getElementById("btnClearFilters");
+    let ALL_MEMBERS = [];
+    let PROFILE_DATA = {};
+
     const grid = document.getElementById("membersGrid");
-    const cards = Array.from(grid.getElementsByClassName("member-card"));
     const visibleCountEl = document.getElementById("visibleCount");
     const totalCountEl = document.getElementById("totalCount");
 
-    totalCountEl.textContent = cards.length.toString();
+    const filterName = document.getElementById("filterName");
+    const filterRole = document.getElementById("filterRole");
+    const filterCompany = document.getElementById("filterCompany");
+    const filterLocation = document.getElementById("filterLocation");
+    const btnClearFilters = document.getElementById("btnClearFilters");
 
-    const dashboard = document.getElementById("membersGrid");
-    const btnDashboard = document.getElementById("btnDashboard");
-    // const btnCatalogue = document.getElementById("btnCatalogue");
-    const btnBooklet = document.getElementById("btnBooklet");
-
-    btnDashboard.addEventListener("click", () => {
-      // với version hiện tại: chỉ cần set active, layout vẫn là kiểu dashboard
-      btnDashboard.classList.add("active");
-      btnCatalogue.classList.remove("active");
-      // nếu sau này bạn có layout catalogue riêng thì thêm code toggle class ở đây
-    });
-
-    // btnCatalogue.addEventListener("click", () => {
-    //   btnCatalogue.classList.add("active");
-    //   btnDashboard.classList.remove("active");
-    //   // TODO: sau này nếu có layout catalogue trong cùng trang, toggle class ở đây
-    // });
-
-    btnBooklet.addEventListener("click", () => {
-      // mở file catalogue dạng PDF-style
-      window.location.href = "catalogue.html";
-    });
-
-    function applyFilters() {
-      const nameValue = nameInput.value.trim().toLowerCase();
-      const titleValue = titleInput.value.trim().toLowerCase();
-      const companyValue = companyInput.value.trim().toLowerCase();
-      const fieldValue = fieldSelect.value;
-
-      let visible = 0;
-
-      cards.forEach((card) => {
-        const cardName = card.dataset.name.toLowerCase();
-        const cardTitle = card.dataset.title.toLowerCase();
-        const cardCompany = card.dataset.company.toLowerCase();
-        const cardField = card.dataset.field;
-
-        let matched = true;
-
-        if (nameValue && !cardName.includes(nameValue)) matched = false;
-        if (titleValue && !cardTitle.includes(titleValue)) matched = false;
-        if (companyValue && !cardCompany.includes(companyValue)) matched = false;
-        if (fieldValue && fieldValue !== cardField) matched = false;
-
-        if (matched) {
-          card.style.display = "flex";
-          visible += 1;
-        } else {
-          card.style.display = "none";
-        }
-      });
-
-      visibleCountEl.textContent = visible.toString();
-    }
-
-    nameInput.addEventListener("input", applyFilters);
-    titleInput.addEventListener("input", applyFilters);
-    companyInput.addEventListener("input", applyFilters);
-    fieldSelect.addEventListener("change", applyFilters);
-
-    clearBtn.addEventListener("click", () => {
-      nameInput.value = "";
-      titleInput.value = "";
-      companyInput.value = "";
-      fieldSelect.value = "";
-      applyFilters();
-    });
-
-    // ========== MODAL LOGIC ==========
     const modal = document.getElementById("profileModal");
     const modalCloseBtn = document.getElementById("modalCloseBtn");
-
     const modalAvatar = document.getElementById("modalAvatar");
     const modalName = document.getElementById("modalName");
-    const modalTitle = document.getElementById("modalTitle");
     const modalCompany = document.getElementById("modalCompany");
+    const modalEmail = document.getElementById("modalEmail");
+    const modalRole = document.getElementById("modalRole");
     const modalLocation = document.getElementById("modalLocation");
-    const modalFieldChip = document.getElementById("modalFieldChip");
     const modalBio = document.getElementById("modalBio");
-    const modalHighlights = document.getElementById("modalHighlights");
 
-    function openProfile(memberId) {
-      const data = PROFILE_DATA[memberId];
+    function loadMembersJSONP() {
+      const callbackName = "handleMembersResponse";
+      const script = document.createElement("script");
+      script.src = API_URL + "?callback=" + callbackName;
+      script.async = true;
+
+      script.onerror = function () {
+        grid.innerHTML = '<div class="status">Không tải được dữ liệu từ Apps Script.</div>';
+      };
+
+      document.body.appendChild(script);
+    }
+
+    function handleMembersResponse(response) {
+      if (!response || !response.success) {
+        grid.innerHTML = '<div class="status">Dữ liệu trả về không hợp lệ.</div>';
+        return;
+      }
+
+      ALL_MEMBERS = response.data || [];
+      PROFILE_DATA = {};
+
+      ALL_MEMBERS.forEach(member => {
+        PROFILE_DATA[member.id] = member;
+      });
+
+      totalCountEl.textContent = ALL_MEMBERS.length;
+      renderMembers(ALL_MEMBERS);
+    }
+
+    window.handleMembersResponse = handleMembersResponse;
+
+    function renderMembers(memberList) {
+      grid.innerHTML = "";
+
+      if (!memberList.length) {
+        grid.innerHTML = '<div class="status">Không tìm thấy thành viên nào.</div>';
+        visibleCountEl.textContent = 0;
+        return;
+      }
+
+      memberList.forEach(member => {
+        const card = document.createElement("article");
+        card.className = "member-card";
+
+        card.innerHTML = `
+          <div class="avatar-wrapper">
+            <img src="${escapeHtml(member.avatar || "")}" alt="${escapeHtml(member.name || "")}" loading="lazy" />
+          </div>
+          <div class="member-name">${escapeHtml(member.name || "")}</div>
+          <div class="member-company">${escapeHtml(member.company || "")}</div>
+          <div class="member-title">${escapeHtml(member.role || "")}</div>
+          <div class="member-location">${escapeHtml(member.location || "")}</div>
+          <button class="btn-view" data-member-id="${escapeHtml(member.id || "")}">View Profile</button>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      visibleCountEl.textContent = memberList.length;
+
+      grid.querySelectorAll(".btn-view").forEach(btn => {
+        btn.addEventListener("click", function () {
+          openProfile(this.getAttribute("data-member-id"));
+        });
+      });
+    }
+
+    function applyFilters() {
+      const nameTerm = filterName.value.trim().toLowerCase();
+      const roleTerm = filterRole.value.trim().toLowerCase();
+      const companyTerm = filterCompany.value.trim().toLowerCase();
+      const locationTerm = filterLocation.value.trim().toLowerCase();
+
+      const filtered = ALL_MEMBERS.filter(member => {
+        const name = (member.name || "").toLowerCase();
+        const role = (member.role || "").toLowerCase();
+        const company = (member.company || "").toLowerCase();
+        const location = (member.location || "").toLowerCase();
+
+        return (
+          name.includes(nameTerm) &&
+          role.includes(roleTerm) &&
+          company.includes(companyTerm) &&
+          location.includes(locationTerm)
+        );
+      });
+
+      renderMembers(filtered);
+    }
+
+    function clearFilters() {
+      filterName.value = "";
+      filterRole.value = "";
+      filterCompany.value = "";
+      filterLocation.value = "";
+      renderMembers(ALL_MEMBERS);
+    }
+
+    function openProfile(id) {
+      const data = PROFILE_DATA[id];
       if (!data) return;
 
-      modalAvatar.src = data.avatar;
-      modalName.textContent = data.name;
-      modalTitle.textContent = data.title;
-      modalCompany.textContent = data.company;
-      modalLocation.textContent = data.location;
-      modalFieldChip.textContent = data.field;
-      modalBio.textContent = data.bio;
-
-      modalHighlights.innerHTML = "";
-      (data.highlights || []).forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        modalHighlights.appendChild(li);
-      });
+      modalAvatar.src = data.avatar || "";
+      modalName.textContent = data.name || "";
+      modalCompany.textContent = data.company || "";
+      modalEmail.textContent = data.email || "";
+      modalRole.textContent = data.role || "";
+      modalLocation.textContent = data.location || "";
+      modalBio.innerHTML = escapeHtml(data.bio || "Chưa có thông tin giới thiệu.").replace(/\n/g, "<br>");
 
       modal.classList.add("active");
     }
@@ -908,28 +612,27 @@
       modal.classList.remove("active");
     }
 
-    // Bind click on each "View Profile"
-    cards.forEach((card) => {
-      const btn = card.querySelector(".btn-view");
-      const memberId = card.dataset.memberId;
-      btn.addEventListener("click", () => openProfile(memberId));
-    });
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    filterName.addEventListener("input", applyFilters);
+    filterRole.addEventListener("input", applyFilters);
+    filterCompany.addEventListener("input", applyFilters);
+    filterLocation.addEventListener("input", applyFilters);
+    btnClearFilters.addEventListener("click", clearFilters);
 
     modalCloseBtn.addEventListener("click", closeModal);
-
-    // Click outside dialog to close
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) closeModal();
     });
 
-    // ESC to close
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.classList.contains("active")) {
-        closeModal();
-      }
-    });
+    loadMembersJSONP();
   </script>
 </body>
 </html>

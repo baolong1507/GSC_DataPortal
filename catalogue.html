@@ -30,7 +30,6 @@
       color: var(--text-main);
     }
 
-    /* ========== TOOLBAR (web view) ========== */
     .toolbar {
       position: sticky;
       top: 0;
@@ -42,6 +41,8 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #d1d5db;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .toolbar-title {
@@ -71,7 +72,6 @@
       padding: 0 10px 30px;
     }
 
-    /* ========== TRANG A4 CHUNG ========== */
     .page {
       width: 794px;
       height: 1123px;
@@ -83,7 +83,6 @@
       overflow: hidden;
     }
 
-    /* ========== BÌA ========== */
     .page.cover {
       color: #ffffff;
       background: #0044a5 !important;
@@ -137,23 +136,6 @@
       margin-bottom: 80px;
     }
 
-    .cover-logo-left,
-    .cover-logo-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .cover-logo-left span,
-    .cover-logo-right span {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      background: rgba(0, 0, 0, 0.12);
-      line-height: 1.3;
-    }
-
     .cover-text-block {
       max-width: 460px;
     }
@@ -172,14 +154,6 @@
       margin-bottom: 14px;
     }
 
-    .cover-location {
-      font-size: 0.95rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.9;
-      margin-bottom: 6px;
-    }
-
     .cover-date {
       font-size: 0.9rem;
       letter-spacing: 0.18em;
@@ -193,15 +167,13 @@
       opacity: 0.85;
     }
 
-    /* ========== TRANG THÀNH VIÊN – KIỂU WEF ========== */
-
     .page-header-band {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 6px;
-      background: #ffffff; /* trắng, giống sách thật */
+      background: #ffffff;
     }
 
     .members-page {
@@ -219,9 +191,9 @@
       padding-bottom: 18px;
       border-top: 1px solid #d4d4d4;
       position: relative;
+      min-height: 430px;
     }
 
-    /* đường kẻ xanh mảnh phía trên mỗi entry */
     .member-row::before {
       content: "";
       position: absolute;
@@ -243,6 +215,7 @@
       object-fit: cover;
       margin-bottom: 8px;
       border: 1px solid #d4d4d4;
+      background: #f8fafc;
     }
 
     .member-name {
@@ -273,6 +246,10 @@
       font-size: 0.86rem;
       line-height: 1.45;
       color: #111827;
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .org-name {
@@ -291,10 +268,23 @@
     .org-body {
       font-size: 0.84rem;
       text-align: justify;
+      overflow: auto;
+      padding-right: 6px;
+      flex: 1;
+      min-height: 0;
     }
 
     .org-body strong {
       font-weight: 700;
+    }
+
+    .org-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .org-body::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
     }
 
     .page-footer {
@@ -305,17 +295,27 @@
       font-size: 0.78rem;
       color: var(--text-sub);
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       border-top: 1px solid #e5e7eb;
       padding-top: 4px;
     }
 
-    .page-footer span.page-number::before {
-      content: "";
+    .status-box {
+      width: 794px;
+      margin: 12px auto;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+      padding: 10px;
+      color: #6b7280;
+      text-align: center;
     }
 
-    /* ========== PRINT STYLE ========== */
+    .hidden {
+      display: none !important;
+    }
+
     @page {
       size: A4;
       margin: 0;
@@ -331,8 +331,9 @@
         background: #ffffff;
       }
 
-      .toolbar {
-        display: none;
+      .toolbar,
+      .status-box {
+        display: none !important;
       }
 
       .book {
@@ -358,7 +359,6 @@
   </style>
 </head>
 <body>
-  <!-- Toolbar khi xem web -->
   <div class="toolbar">
     <div class="toolbar-title">
       Global Shapers – Participants Catalogue
@@ -373,17 +373,15 @@
     </div>
   </div>
 
-  <main class="book">
-    <!-- ========== COVER PAGE ========== -->
+  <div id="statusBox" class="status-box">Loading data...</div>
+
+  <main class="book" id="book">
     <section class="page cover">
       <div class="cover-inner">
         <div class="cover-header-logos">
           <div class="cover-logo-left">
             <img src="logos/gsc.png" alt="Global Shapers Community" height="120" />
           </div>
-          <!-- <div class="cover-logo-right">
-            <img src="logos/wef.png" alt="World Economic Forum" height="130" />
-          </div> -->
         </div>
 
         <div class="cover-text-block">
@@ -393,163 +391,199 @@
           <div class="cover-main-title">
             Global Shapers HCMC<br/> Directory
           </div>
-          <div class="cover-date">
-            DECEMBER, 2025
+          <div class="cover-date" id="coverDate">
+            LOADING...
           </div>
         </div>
 
-        <div class="cover-footer-tag">
-          Internal use · Global Shapers HCMC Directory 
+        <div class="cover-footer-tag" id="coverFooterTag">
+          Global Shapers HCMC Directory
         </div>
       </div>
     </section>
-
-    <!-- ========== PAGE 1 – 2 MEMBERS ========== -->
-    <section class="page">
-      <div class="page-header-band"></div>
-
-      <div class="members-page">
-        <!-- Member 1: Bảo Long -->
-        <article class="member-row">
-          <div class="member-left">
-            <img src="avatar.jpg" alt="Bảo Long" class="member-photo" />
-            <div class="member-name">Phạm Hoàng <br> Bảo Long</div>
-            <div class="member-title">Software Engineer</div>
-            <div class="member-country">Viet Nam</div>
-            <div class="member-tag">Active Member, <br> HCMC Hub</div>
-            <div class="member-centre"><br>AI, IoT & Embedded Systems</div>
-          </div>
-          <div class="member-right">
-            <h2 class="org-name">Bosch Global Software Technologies</h2>
-            <div class="org-tagline">
-              Building AI-powered tools and platforms for engineering teams
-            </div>
-            <p class="org-body">
-              <strong><br>Profile:</strong> Long is a software engineer focusing on
-              AI, IoT and embedded systems. At Bosch Global Software
-              Technologies, he develops internal platforms and AI assistants
-              that help engineering teams automate workflows, improve code
-              quality and accelerate innovation. Beyond his corporate work, Long
-              co-leads community projects that introduce AI and digital skills
-              to students and young professionals, and is passionate about
-              making advanced technologies more accessible in Viet Nam.
-            </p>
-          </div>
-        </article>
-
-        <!-- Member 2: Bác Trang -->
-        <article class="member-row">
-          <div class="member-left">
-            <img src="BacTrang.jpg" alt="Bác Trang" class="member-photo" />
-            <div class="member-name">Bác Trang</div>
-            <div class="member-title">
-              Senior Business Intelligence Analyst
-            </div>
-            <div class="member-country">Viet Nam</div>
-            <div class="member-tag">Active Member, <br> HCMC Hub</div>
-            <div class="member-centre"><br>E-commerce & Data Analytics</div>
-          </div>
-          <div class="member-right">
-            <h2 class="org-name">Leading E-commerce Platform</h2>
-            <div class="org-tagline">
-              Turning complex data into insights for customer-centric growth
-            </div>
-            <p class="org-body">
-              <strong><br>Profile:</strong> Trang is a senior business intelligence
-              analyst in a major e-commerce company, where she designs and
-              manages analytics systems for large portfolios of key accounts and
-              VIP customers. She leads the ChangeMakers Series project,
-              combining data, storytelling and community building to empower
-              young professionals. Known in the Hub for her “legendary” forms
-              and spreadsheets, she helps teams structure information clearly
-              and make better, faster decisions.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <footer class="page-footer">
-        <span>Global Shapers HCMC Directory</span>
-        <span class="page-number">1</span>
-      </footer>
-    </section>
-
-    <!-- ========== PAGE 2 – 2 MEMBERS (ví dụ placeholder) ========== -->
-    <section class="page">
-      <div class="page-header-band"></div>
-
-      <div class="members-page">
-        <!-- Member 3: Anh Mỹ -->
-        <article class="member-row">
-          <div class="member-left">
-            <img src="AnhMy.jpg" alt="Anh Mỹ" class="member-photo" />
-            <div class="member-name">Anh Mỹ</div>
-            <div class="member-title">Policy Advisor</div>
-            <div class="member-country">Viet Nam</div>
-            <div class="member-tag">Impact Officer, <br> HCMC Hub</div>
-            <div class="member-centre">
-              <br>Public Policy & Digital Transformation
-            </div>
-          </div>
-          <div class="member-right">
-            <h2 class="org-name">
-              Vietnam C4IR – Centre for the Fourth Industrial Revolution
-            </h2>
-            <div class="org-tagline">
-              Shaping agile policy frameworks for emerging technologies
-            </div>
-            <p class="org-body">
-              <strong><br>Profile:</strong> Mỹ works at the Vietnam Centre for the
-              Fourth Industrial Revolution (C4IR) in Ho Chi Minh City, advising
-              public agencies and businesses on digital transformation and
-              technology governance. As Impact Officer and Project Committee
-              Lead at the Hub, she has helped design and deliver the Autumn
-              Economic Forum and other flagship initiatives that connect youth,
-              policymakers and industry leaders. She is committed to making
-              technology policy more inclusive, evidence-based and responsive to
-              community needs.
-            </p>
-          </div>
-        </article>
-
-        <!-- Member 4: ví dụ placeholder – cập nhật theo thực tế -->
-        <article class="member-row">
-          <div class="member-left">
-            <img src="Nick.jpg" alt="Shaper Name" class="member-photo" />
-            <div class="member-name">Nick & Judy</div>
-            <div class="member-title">zootopia 2</div>
-            <div class="member-country">United State</div>
-            <div class="member-tag">Active Member, HCMC Hub</div>
-            <div class="member-centre"><br>Buddy cop</div>
-          </div>
-          <div class="member-right">
-            <h2 class="org-name">Walt Disney Animation Studios / Zootopia 2<br></h2>
-            <div class="org-tagline">
-                Ngày phát hành: 28 tháng 11, 2025 (Việt Nam) <br>
-                Đạo diễn: Jared Bush, Byron Howard <br>
-                Diễn viên: Ginnifer Goodwin; Jason Bateman; Quan Kế Huy; Fortune Feimster
-                Thời lượng: 1 giờ 48 phút
-            </div>
-            <p class="org-body">
-              <strong><br>Profile:</strong> 
-              Zootopia: Phi vụ động trời 2 là bộ phim hoạt hình thuộc thể loại hài buddy cop của Hoa Kỳ 
-              được sản xuất bởi Walt Disney Animation Studios và do Walt Disney Pictures phát hành.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <footer class="page-footer">
-        <span>Global Shapers HCMC Directory</span>
-        <span class="page-number">2</span>
-      </footer>
-    </section>
-
-    <!-- Thêm các section.page tương tự để bổ sung thành viên -->
   </main>
 
+  <template id="memberPageTemplate">
+    <section class="page">
+      <div class="page-header-band"></div>
+      <div class="members-page"></div>
+      <footer class="page-footer"></footer>
+    </section>
+  </template>
+
+  <template id="memberRowTemplate">
+    <article class="member-row">
+      <div class="member-left">
+        <img src="" alt="" class="member-photo" />
+        <div class="member-name"></div>
+        <div class="member-title"></div>
+        <div class="member-country"></div>
+        <div class="member-tag"></div>
+        <div class="member-centre"></div>
+      </div>
+      <div class="member-right">
+        <h2 class="org-name"></h2>
+        <div class="org-tagline"></div>
+        <p class="org-body"></p>
+      </div>
+    </article>
+  </template>
+
   <script>
-    // Sau này bạn có thể load dữ liệu từ JSON và generate member-row tự động.
+    const API_URL = "https://script.google.com/macros/s/AKfycbzw92Jq3QimCpARVl_4hajgBo7ZOCFKytJA2kNlI7CMza4RP_dOt24sZen2bg8bDJIO/exec";
+    const MEMBERS_PER_PAGE = 2;
+
+    const statusBox = document.getElementById("statusBox");
+    const book = document.getElementById("book");
+    const coverDate = document.getElementById("coverDate");
+
+    function loadMembersJSONP() {
+      if (!API_URL || API_URL === "YOUR_APPS_SCRIPT_WEBAPP_URL") {
+        statusBox.textContent = "Please set API_URL to your Apps Script Web App URL.";
+        return;
+      }
+
+      const callbackName = "handleCatalogueMembersResponse";
+      const script = document.createElement("script");
+      script.src = API_URL + "?callback=" + callbackName;
+      script.async = true;
+      script.onerror = function () {
+        statusBox.textContent = "Cannot load data from Apps Script.";
+      };
+      document.body.appendChild(script);
+    }
+
+    function handleCatalogueMembersResponse(response) {
+      if (!response || !response.success || !Array.isArray(response.data)) {
+        statusBox.textContent = "Invalid response from Apps Script.";
+        return;
+      }
+
+      const members = response.data.filter(member => (member.name || "").trim() !== "");
+      renderCover(members.length);
+      renderMemberPages(members);
+
+      statusBox.classList.add("hidden");
+    }
+
+    window.handleCatalogueMembersResponse = handleCatalogueMembersResponse;
+
+    function getDirectoryDateLabel() {
+      const now = new Date();
+      const month = now.toLocaleDateString("en-GB", { month: "long" });
+      const year = now.toLocaleDateString("en-GB", { year: "numeric" });
+      return `${month}, ${year}`;
+    }
+
+    function getFooterLabel() {
+      return `Global Shapers HCMC Directory · ${getDirectoryDateLabel()}`;
+    }
+
+    function renderCover(totalMembers) {
+      const dateLabel = getDirectoryDateLabel();
+      coverDate.textContent = dateLabel.toUpperCase();
+
+      document.getElementById("coverFooterTag").textContent =
+        `Global Shapers HCMC Directory · Developed by Long`;
+    }
+
+    function renderMemberPages(members) {
+      document.querySelectorAll("main.book .page:not(.cover)").forEach(page => page.remove());
+
+      if (!members.length) {
+        statusBox.textContent = "No members found.";
+        statusBox.classList.remove("hidden");
+        return;
+      }
+
+      const chunks = chunkArray(members, MEMBERS_PER_PAGE);
+      chunks.forEach((chunk, index) => {
+        const page = createMemberPage(chunk, index + 1);
+        book.appendChild(page);
+      });
+    }
+
+    function createMemberPage(members, pageNumber) {
+      const pageTemplate = document.getElementById("memberPageTemplate");
+      const pageFragment = pageTemplate.content.cloneNode(true);
+      const pageEl = pageFragment.querySelector(".page");
+      const membersPageEl = pageFragment.querySelector(".members-page");
+      const footerEl = pageFragment.querySelector(".page-footer");
+
+      members.forEach(member => {
+        membersPageEl.appendChild(createMemberRow(member));
+      });
+
+      footerEl.textContent = getFooterLabel();
+      return pageEl;
+    }
+
+    function createMemberRow(member) {
+      const rowTemplate = document.getElementById("memberRowTemplate");
+      const rowFragment = rowTemplate.content.cloneNode(true);
+      const row = rowFragment.querySelector(".member-row");
+
+      const photo = row.querySelector(".member-photo");
+      photo.src = member.avatar || "https://via.placeholder.com/110x140?text=No+Image";
+      photo.alt = member.name || "Member photo";
+
+      row.querySelector(".member-name").innerHTML = formatName(member.name || "");
+      row.querySelector(".member-title").textContent = member.role || "-";
+      row.querySelector(".member-country").textContent = member.location || "-";
+      row.querySelector(".member-tag").innerHTML = "Active Member,<br>HCMC Hub";
+      row.querySelector(".member-centre").innerHTML = `<br>${escapeHtml(getFocusArea(member))}`;
+
+      row.querySelector(".org-name").textContent = member.company || "Independent";
+      row.querySelector(".org-tagline").textContent = buildTagline(member);
+
+      const bioHtml = escapeHtml(member.bio || "No biography available.").replace(/\n/g, "<br>");
+      row.querySelector(".org-body").innerHTML = `<strong>Profile:</strong> ${bioHtml}`;
+
+      return row;
+    }
+
+    function formatName(name) {
+      const safe = escapeHtml(name || "");
+      const parts = safe.split(/\s+/).filter(Boolean);
+      if (parts.length >= 3) {
+        const mid = Math.ceil(parts.length / 2);
+        return parts.slice(0, mid).join(" ") + "<br>" + parts.slice(mid).join(" ");
+      }
+      return safe;
+    }
+
+    function getFocusArea(member) {
+      const parts = [member.role, member.company]
+        .map(v => (v || "").trim())
+        .filter(Boolean);
+      return parts.join(" · ") || "Community Member";
+    }
+
+    function buildTagline(member) {
+      const parts = [member.company, member.location]
+        .map(v => (v || "").trim())
+        .filter(Boolean);
+      return parts.join(" · ") || "Global Shapers HCMC member";
+    }
+
+    function chunkArray(arr, size) {
+      const out = [];
+      for (let i = 0; i < arr.length; i += size) {
+        out.push(arr.slice(i, i + size));
+      }
+      return out;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    loadMembersJSONP();
   </script>
 </body>
 </html>
