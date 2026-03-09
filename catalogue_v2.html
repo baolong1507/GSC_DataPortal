@@ -198,6 +198,72 @@
       line-height: 1.5;
     }
 
+    .subcover {
+      background: #ffffff;
+      color: var(--text-main);
+    }
+
+    .subcover-content {
+      padding: 60px 56px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: flex-start;
+    }
+
+    .subcover-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent-soft);
+    }
+
+    .subcover-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-main);
+      margin-bottom: 32px;
+      flex: 1;
+    }
+
+    .subcover-text p {
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    .subcover-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0057b8;
+      margin-bottom: 10px;
+    }
+
+    .subcover-contact {
+      background: var(--accent-soft);
+      padding: 18px 18px;
+      border-radius: 4px;
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .subcover-contact p {
+      margin: 0;
+    }
+
+    .subcover-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    .subcover-footer p {
+      margin: 0;
+    }
+
     .summary-page-content {
       padding: 24px 56px 78px;
       height: calc(100% - 150px);
@@ -231,10 +297,11 @@
       background: var(--table-row);
     }
 
-    .col-no { width: 9%; }
-    .col-name { width: 39%; }
-    .col-year { width: 20%; }
-    .col-hub { width: 32%; }
+    .col-no { width: 6%; }
+    .col-name { width: 32%; }
+    .col-organization { width: 30%; }
+    .col-year { width: 14%; }
+    .col-hub { width: 18%; }
 
     .members-page {
       display: flex;
@@ -355,10 +422,14 @@
       font-size: 0.78rem;
       color: var(--text-sub);
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       border-top: 1px solid #e5e7eb;
       padding-top: 4px;
+    }
+
+    .summary-table tbody td:nth-child(2) {
+      font-weight: 700;
     }
 
     .status-box {
@@ -469,7 +540,7 @@
       <div class="page-title-block">
         <div class="page-eyebrow">Member Summary</div>
         <div class="page-title">Global Shapers HCMC Directory</div>
-        <div class="page-subtitle">Members are sorted by year become shaper from oldest to newest. Use this section as a quick printable reference before the detailed profile pages.</div>
+        <div class="page-subtitle">A quick reference to the Global Shapers HCMC community, highlighting members information across cohorts.</div>
       </div>
       <div class="summary-page-content">
         <table class="summary-table">
@@ -477,6 +548,7 @@
             <tr>
               <th class="col-no">No.</th>
               <th class="col-name">Name</th>
+              <th class="col-organization">Organization</th>
               <th class="col-year">Shaper Since</th>
               <th class="col-hub">Hub</th>
             </tr>
@@ -485,6 +557,36 @@
         </table>
       </div>
       <footer class="page-footer"></footer>
+    </section>
+  </template>
+
+  <template id="subcoverPageTemplate">
+    <section class="page subcover">
+      <div class="subcover-content">
+        <div class="subcover-title">About Global Shapers HCMC Directory</div>
+        <div class="subcover-text">
+          <p>The Global Shapers Community is an initiative of the World Economic Forum that brings together young leaders from around the world who are committed to shaping the future of their communities and the world. Global Shapers HCMC Hub is a part of the Global Shapers Community, a non-profit initiative of the World Economic Forum, consisting of inspiring young people working together to address local, regional and global challenges.</p>
+          <p>This directory serves as a comprehensive reference guide to the members of the Global Shapers HCMC Hub, showcasing the diverse backgrounds, expertise, and contributions of our community members across multiple cohorts and organizations.</p>
+        </div>
+        <div class="subcover-contact">
+          <div class="subcover-section-title">Contact Information</div>
+          <p>For inquiries, collaborations, or more information about the Global Shapers HCMC Hub, please reach out through our official channels:</p>
+          <!-- <p>     ➤ Facebook: Global Shapers Ho Chi Minh City Hub</p>
+          <p>     ➤ Website: https://tinyurl.com/hcmcshapers</p>
+          <p>     ➤ Email: ho-chi-minh-city@globalshapers.org</p> -->
+          <p>➤ Facebook: <a href="https://www.facebook.com/GlobalShapersHCMC" target="_blank" rel="noopener noreferrer">Global Shapers Ho Chi Minh City Hub</a></p>
+          <p>➤ Website: <a href="https://tinyurl.com/hcmcshapers" target="_blank" rel="noopener noreferrer">https://tinyurl.com/hcmcshapers</a></p>
+          <p>
+            ➤ Email:
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=globalshapershochiminhcity@gmail.com" target="_blank" rel="noopener noreferrer">
+              globalshapershochiminhcity@gmail.com
+            </a>
+          </p>
+        </div>
+        <div class="subcover-footer">
+          <p><em>Directory developed by: Pham Hoang Bao Long</em></p>
+        </div>
+      </div>
     </section>
   </template>
 
@@ -517,7 +619,7 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwbpyvKk_jie_h9PPLFJM7Do2HHCf0HjmLnaSu9vletAKKvOv4PcYX4ZjISPZTHYySJ/exec";
     const MEMBERS_PER_PAGE = 2;
-    const SUMMARY_ROWS_PER_PAGE = 28;
+    const SUMMARY_ROWS_PER_PAGE = 18;
 
     const statusBox = document.getElementById("statusBox");
     const book = document.getElementById("book");
@@ -571,7 +673,7 @@
     function renderCover(totalMembers) {
       const dateLabel = getDirectoryDateLabel();
       coverDate.textContent = dateLabel.toUpperCase();
-      document.getElementById("coverFooterTag").textContent = `Global Shapers HCMC Directory · ${totalMembers} members`;
+      document.getElementById("coverFooterTag").textContent = `Global Shapers HCMC Directory`;
     }
 
     function renderAllPages(members) {
@@ -583,7 +685,12 @@
         return;
       }
 
-      let pageNumber = 1;
+      let pageNumber = 2;
+
+      // Render subcover page
+      const subcoverPage = createSubcoverPage();
+      book.appendChild(subcoverPage);
+      pageNumber += 1;
 
       const summaryChunks = chunkArray(members, SUMMARY_ROWS_PER_PAGE);
       summaryChunks.forEach((chunk, index) => {
@@ -600,6 +707,14 @@
       });
     }
 
+    function createSubcoverPage() {
+      const tpl = document.getElementById("subcoverPageTemplate");
+      const fragment = tpl.content.cloneNode(true);
+      const pageEl = fragment.querySelector(".page");
+      
+      return pageEl;
+    }
+
     function createSummaryPage(members, startIndex, pageNumber) {
       const tpl = document.getElementById("summaryPageTemplate");
       const fragment = tpl.content.cloneNode(true);
@@ -610,15 +725,16 @@
       members.forEach((member, idx) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${startIndex + idx + 1}</td>
+          <td>${startIndex + idx + 1}.</td>
           <td>${escapeHtml(member.name || "-")}</td>
+          <td>${escapeHtml(member.organization || "-")}</td>
           <td>${escapeHtml(displayYear(member.yearBecomeShaper))}</td>
           <td>${escapeHtml(member.hub || "-")}</td>
         `;
         tbody.appendChild(tr);
       });
 
-      footerEl.textContent = getFooterLabel(pageNumber);
+      footerEl.innerHTML = `<span>Global Shapers HCMC Directory · ${getDirectoryDateLabel()}</span><span>Page ${pageNumber}</span>`;
       return pageEl;
     }
 
@@ -633,7 +749,7 @@
         membersPageEl.appendChild(createMemberRow(member));
       });
 
-      footerEl.textContent = getFooterLabel(pageNumber);
+      footerEl.innerHTML = `<span>Global Shapers HCMC Directory · ${getDirectoryDateLabel()}</span><span>Page ${pageNumber}</span>`;
       return pageEl;
     }
 
@@ -665,7 +781,8 @@
       return {
         ...member,
         yearBecomeShaper: extractYearBecomeShaper(member),
-        hub: extractHub(member)
+        hub: extractHub(member),
+        organization: extractOrganization(member)
       };
     }
 
@@ -701,6 +818,24 @@
         if (text) return text;
       }
       return "HCMC Hub";
+    }
+
+    function extractOrganization(member) {
+      const candidates = [
+        member.organization,
+        member.organisation,
+        member.company,
+        member.companyName,
+        member.org,
+        member.orgName,
+        member.employer
+      ];
+
+      for (const value of candidates) {
+        const text = String(value || "").trim();
+        if (text) return text;
+      }
+      return "Independent";
     }
 
     function parseYear(value) {

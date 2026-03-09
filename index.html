@@ -227,6 +227,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      background: #f0f4f8;
     }
 
     .member-name {
@@ -393,7 +394,7 @@
         <span class="view-label">View:</span>
         <div class="view-toggle-group">
           <a class="toggle-btn active" href="index.html">Dashboard</a>
-          <a class="toggle-btn" href="catalogue.html">Catalogue</a>
+          <a class="toggle-btn" href="catalogue_v2.html">Catalogue</a>
         </div>
       </div>
     </header>
@@ -461,7 +462,7 @@
 
       <div class="modal-body">
         <div class="modal-section">
-          <h4>Giới thiệu (Biography)</h4>
+          <h4>Biography</h4>
           <p id="modalBio" style="line-height:1.6;"></p>
         </div>
       </div>
@@ -469,7 +470,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzw92Jq3QimCpARVl_4hajgBo7ZOCFKytJA2kNlI7CMza4RP_dOt24sZen2bg8bDJIO/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbwbpyvKk_jie_h9PPLFJM7Do2HHCf0HjmLnaSu9vletAKKvOv4PcYX4ZjISPZTHYySJ/exec";
 
     let ALL_MEMBERS = [];
     let PROFILE_DATA = {};
@@ -526,6 +527,80 @@
 
     window.handleMembersResponse = handleMembersResponse;
 
+    function getAvatarUrl(avatarUrl) {
+      if (avatarUrl && avatarUrl.trim()) {
+        return avatarUrl;
+      }
+      // Default user icon SVG (Base64)
+      return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjQiIGZpbGw9IiM5Y2EzYWYiLz48cGF0aCBkPSJNMTIgMTRjLTYgMC04IDMtOCAzdjZoMTZ2LTZzLTItMy04LTN6IiBmaWxsPSIjOWNhM2FmIi8+PC9zdmc+";
+    }
+
+    function batchCreateMemberCards(memberList) {
+      const fragment = document.createDocumentFragment();
+
+      memberList.forEach(member => {
+        const card = document.createElement("article");
+        card.className = "member-card";
+
+        const avatarDiv = document.createElement("div");
+        avatarDiv.className = "avatar-wrapper";
+
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = escapeHtml(member.name || "");
+        img.onerror = function () {
+          this.onerror = null;
+          this.src = "logos/user.png";
+          this.style.padding = "2px";
+        };
+        
+        // Set avatar source
+        if (member.avatar && member.avatar.trim()) {
+          img.src = member.avatar;
+        } else {
+          img.src = "logos/user.png";
+          img.style.padding = "12px";
+        }
+
+        avatarDiv.appendChild(img);
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "member-name";
+        nameDiv.textContent = escapeHtml(member.name || "");
+
+        const companyDiv = document.createElement("div");
+        companyDiv.className = "member-company";
+        companyDiv.textContent = escapeHtml(member.company || "");
+
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "member-title";
+        titleDiv.textContent = escapeHtml(member.role || "");
+
+        const locationDiv = document.createElement("div");
+        locationDiv.className = "member-location";
+        locationDiv.textContent = escapeHtml(member.location || "");
+
+        const btn = document.createElement("button");
+        btn.className = "btn-view";
+        btn.setAttribute("data-member-id", escapeHtml(member.id || ""));
+        btn.textContent = "View Profile";
+        btn.addEventListener("click", function () {
+          openProfile(this.getAttribute("data-member-id"));
+        });
+
+        card.appendChild(avatarDiv);
+        card.appendChild(nameDiv);
+        card.appendChild(companyDiv);
+        card.appendChild(titleDiv);
+        card.appendChild(locationDiv);
+        card.appendChild(btn);
+
+        fragment.appendChild(card);
+      });
+
+      return fragment;
+    }
+
     function renderMembers(memberList) {
       grid.innerHTML = "";
 
@@ -535,31 +610,8 @@
         return;
       }
 
-      memberList.forEach(member => {
-        const card = document.createElement("article");
-        card.className = "member-card";
-
-        card.innerHTML = `
-          <div class="avatar-wrapper">
-            <img src="${escapeHtml(member.avatar || "")}" alt="${escapeHtml(member.name || "")}" loading="lazy" />
-          </div>
-          <div class="member-name">${escapeHtml(member.name || "")}</div>
-          <div class="member-company">${escapeHtml(member.company || "")}</div>
-          <div class="member-title">${escapeHtml(member.role || "")}</div>
-          <div class="member-location">${escapeHtml(member.location || "")}</div>
-          <button class="btn-view" data-member-id="${escapeHtml(member.id || "")}">View Profile</button>
-        `;
-
-        grid.appendChild(card);
-      });
-
+      grid.appendChild(batchCreateMemberCards(memberList));
       visibleCountEl.textContent = memberList.length;
-
-      grid.querySelectorAll(".btn-view").forEach(btn => {
-        btn.addEventListener("click", function () {
-          openProfile(this.getAttribute("data-member-id"));
-        });
-      });
     }
 
     function applyFilters() {
@@ -597,13 +649,19 @@
       const data = PROFILE_DATA[id];
       if (!data) return;
 
-      modalAvatar.src = data.avatar || "";
+      modalAvatar.src = getAvatarUrl(data.avatar);
+      modalAvatar.style.padding = "";
+      modalAvatar.onerror = function () {
+        this.onerror = null;
+        this.src = "logos/user.png";
+        this.style.padding = "10px";
+      };
       modalName.textContent = data.name || "";
       modalCompany.textContent = data.company || "";
       modalEmail.textContent = data.email || "";
       modalRole.textContent = data.role || "";
       modalLocation.textContent = data.location || "";
-      modalBio.innerHTML = escapeHtml(data.bio || "Chưa có thông tin giới thiệu.").replace(/\n/g, "<br>");
+      modalBio.innerHTML = escapeHtml(data.bio || "No information is available.").replace(/\n/g, "<br>");
 
       modal.classList.add("active");
     }
